@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Mentoring — Course Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+<style>
+:root {
+  --bg: #0c0e12;
+  --bg2: #12151c;
+  --bg3: #1a1f2b;
+  --bg4: #222736;
+  --border: #2a303f;
+  --border2: #353d52;
+  --text: #e8eaf0;
+  --text2: #9ba3ba;
+  --text3: #5f6880;
+  --amber: #f59e0b;
+  --amber2: #fbbf24;
+  --amber-dim: #f59e0b22;
+  --amber-bg: #f59e0b14;
+  --green: #34d399;
+  --green-dim: #34d39922;
+  --red: #f87171;
+  --red-dim: #f8717122;
+  --blue: #60a5fa;
+  --blue-dim: #60a5fa18;
+  --purple: #a78bfa;
+  --radius: 8px;
+  --radius2: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { height: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ─── Header ─── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  z-index: 10;
+}
+.header-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--amber);
+  letter-spacing: -0.5px;
+}
+.header-logo span { color: var(--text2); font-weight: 400; }
+.header-badge {
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  background: var(--amber-dim);
+  color: var(--amber2);
+  border: 1px solid var(--amber);
+  padding: 2px 8px;
+  border-radius: 100px;
+  letter-spacing: 0.5px;
+}
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.arc-tag {
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid;
+}
+.arc-tag.a1 { background: #60a5fa14; color: #93c5fd; border-color: #60a5fa44; }
+.arc-tag.a2 { background: #34d39914; color: #6ee7b7; border-color: #34d39944; }
+.arc-tag.a3 { background: #a78bfa14; color: #c4b5fd; border-color: #a78bfa44; }
+
+/* ─── Layout ─── */
+.layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ─── Sidebar ─── */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 12px 8px;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.sidebar-section {
+  font-size: 10px;
+  font-family: 'Fira Code', monospace;
+  color: var(--text3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 12px 4px;
+  margin-top: 8px;
+}
+.session-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius);
+  text-align: left;
+  transition: background 0.15s;
+  margin-bottom: 2px;
+}
+.session-btn:hover { background: var(--bg3); }
+.session-btn.active { background: var(--amber-bg); }
+.session-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  width: 20px;
+  flex-shrink: 0;
+}
+.session-btn.active .session-num { color: var(--amber); }
+.session-info { flex: 1; min-width: 0; }
+.session-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.session-btn.active .session-title { color: var(--amber2); }
+.session-tag {
+  font-size: 10px;
+  color: var(--text3);
+  font-family: 'Fira Code', monospace;
+  margin-top: 1px;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--border2);
+}
+.session-btn.active .dot { background: var(--amber); }
+.session-btn.completed .dot { background: var(--green); }
+
+/* ─── Main Content ─── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 36px;
+  background: var(--bg);
+}
+.main::-webkit-scrollbar { width: 6px; }
+.main::-webkit-scrollbar-track { background: transparent; }
+.main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ─── Session Header ─── */
+.session-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.session-number-big {
+  font-family: 'Syne', sans-serif;
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--border2);
+  line-height: 1;
+  flex-shrink: 0;
+  letter-spacing: -3px;
+}
+.session-meta { flex: 1; }
+.session-arc {
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  color: var(--text3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.session-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+.session-desc {
+  margin-top: 8px;
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 640px;
+}
+.session-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+
+/* ─── Section titles ─── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  color: var(--text3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ─── Concept Cards ─── */
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.concept-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+.concept-card:hover { border-color: var(--border2); }
+.concept-icon {
+  font-size: 20px;
+  margin-bottom: 10px;
+  display: block;
+}
+.concept-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.concept-body {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.concept-analogy {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: var(--amber-bg);
+  border-left: 2px solid var(--amber);
+  border-radius: 0 4px 4px 0;
+  font-size: 12px;
+  color: var(--amber2);
+  font-style: italic;
+}
+
+/* ─── Code Playground ─── */
+.playground {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.playground-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+.playground-dots { display: flex; gap: 5px; }
+.playground-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.playground-dot:nth-child(1) { background: #ff5f57; }
+.playground-dot:nth-child(2) { background: #febc2e; }
+.playground-dot:nth-child(3) { background: #28c840; }
+.playground-title {
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  color: var(--text3);
+  flex: 1;
+}
+.run-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: var(--amber);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.run-btn:hover { background: var(--amber2); }
+.run-btn:active { transform: scale(0.97); }
+.run-btn svg { width: 11px; height: 11px; fill: #000; }
+.clear-btn {
+  padding: 5px 10px;
+  background: transparent;
+  color: var(--text3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.clear-btn:hover { background: var(--bg4); color: var(--text2); }
+.playground-editor {
+  position: relative;
+}
+.code-textarea {
+  width: 100%;
+  min-height: 200px;
+  background: var(--bg);
+  color: #c9d1d9;
+  border: none;
+  outline: none;
+  font-family: 'Fira Code', monospace;
+  font-size: 13.5px;
+  line-height: 1.7;
+  padding: 16px 20px;
+  resize: vertical;
+  tab-size: 4;
+}
+.playground-output {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+.output-label {
+  padding: 6px 16px;
+  font-size: 10px;
+  font-family: 'Fira Code', monospace;
+  color: var(--text3);
+  letter-spacing: 1px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.output-text {
+  padding: 12px 20px;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  color: var(--green);
+  line-height: 1.7;
+  min-height: 60px;
+  white-space: pre-wrap;
+}
+.output-text.error { color: var(--red); }
+.output-text.empty { color: var(--text3); font-style: italic; }
+
+/* ─── Tips Row ─── */
+.tips-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.tip-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 16px;
+}
+.tip-card.ai { border-left: 2px solid var(--purple); }
+.tip-card.watch { border-left: 2px solid var(--red); }
+.tip-label {
+  font-size: 10px;
+  font-family: 'Fira Code', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.tip-label.ai { color: var(--purple); }
+.tip-label.watch { color: var(--red); }
+.tip-prompt {
+  background: var(--bg3);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+}
+.tip-note {
+  font-size: 12px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+
+/* ─── Challenge Card ─── */
+.challenge-card {
+  background: var(--bg2);
+  border: 1px solid var(--amber);
+  border-radius: var(--radius2);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.challenge-header {
+  background: var(--amber-dim);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--amber);
+}
+.challenge-badge {
+  font-size: 10px;
+  font-family: 'Fira Code', monospace;
+  color: var(--amber);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.challenge-star { color: var(--amber); font-size: 14px; }
+.challenge-body { padding: 16px 18px; }
+.challenge-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.challenge-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+.challenge-steps {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.challenge-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text2);
+}
+.step-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--amber-dim);
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-size: 10px;
+  font-family: 'Fira Code', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.bonus-chip {
+  display: inline-block;
+  font-size: 10px;
+  font-family: 'Fira Code', monospace;
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 1px 7px;
+  border-radius: 100px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ─── Scrollbar ─── */
+.sidebar::-webkit-scrollbar, .main::-webkit-scrollbar { width: 4px; }
+
+/* ─── Loading ─── */
+.py-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  color: var(--amber);
+}
+.py-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--amber-dim);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.py-status {
+  position: fixed;
+  bottom: 16px;
+  right: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  color: var(--text3);
+  z-index: 100;
+}
+.py-status.ready { color: var(--green); border-color: var(--green); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">🐍 py<span>mentor</span></div>
+  <div class="header-badge">10 sessions · 20 hours</div>
+  <div class="header-right">
+    <div class="arc-tag a1">Arc 1 · Think</div>
+    <div class="arc-tag a2">Arc 2 · Build</div>
+    <div class="arc-tag a3">Arc 3 · Ship</div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar" id="sidebar"></div>
+  <div class="main" id="main"></div>
+</div>
+
+<div class="py-status" id="pyStatus">⏳ loading python…</div>
+
+<script>
+const SESSIONS = [
+  {
+    num: 1,
+    title: "How Computers Think",
+    arc: "Arc 1 — Think Like a Computer",
+    arcClass: "a1",
+    tags: ["algorithms", "pseudocode", "logic", "no-code"],
+    desc: "Before writing a single line of Python, you need to think like a computer. Computers are incredibly fast, but also incredibly literal — they do exactly what you tell them, nothing more, nothing less. Today we learn how to speak their language.",
+    concepts: [
+      { icon: "🍳", name: "Algorithm", body: "A set of step-by-step instructions to solve a problem. Every recipe, every GPS route, every song recommendation is an algorithm.", analogy: "Like a recipe — leave out one step and the dish is ruined." },
+      { icon: "📥", name: "Input → Process → Output", body: "Every program ever written follows this pattern. You put something in, something happens to it, and something comes out.", analogy: "Like a vending machine: insert money → press button → get snack." },
+      { icon: "📝", name: "Pseudocode", body: "Writing your algorithm in plain English before translating it to code. It helps you think through the logic without worrying about syntax.", analogy: "Like a sketch before painting — you figure out the composition first." },
+      { icon: "🔀", name: "Decisions & Loops", body: "Programs can make choices (if/else) and repeat things (loops). These two ideas alone can describe almost anything a computer does.", analogy: "Like alarm clocks: LOOP until alarm time → DECIDE whether to snooze." }
+    ],
+    code: `# Welcome! This isn't Python yet — it's pseudocode.
+# Pseudocode is writing your algorithm in plain English.
+# Try converting this to real steps:
+
+# ALGORITHM: Find the highest score
+# INPUT: a list of exam scores
+# STEPS:
+#   1. Set 'best' to the first score
+#   2. FOR each score in the list:
+#       IF score > best THEN
+#           set best = score
+#   3. PRINT "Highest score is:", best
+#   4. END
+
+# Now try it for real in Python below!
+scores = [72, 85, 91, 68, 77, 95, 83]
+best = scores[0]
+
+for score in scores:
+    if score > best:
+        best = score
+
+print("Highest score:", best)
+print("Done! Can you explain every line of this?")`,
+    aiPrompt: 'I wrote this algorithm to describe how to log into a website. Can you tell me if I\'m missing any steps, and explain WHY those steps matter? [paste your pseudocode]',
+    watchOut: 'Computers are EXTREMELY literal. "Put peanut butter on bread" will crash if you haven\'t told the computer to open the jar first. Precision is everything.',
+    challenge: {
+      title: "The Morning Routine Algorithm",
+      desc: "Write an algorithm for your morning routine. No code — just numbered steps in plain English.",
+      steps: [
+        "At least 10 steps total",
+        "Include at least 1 decision (IF it's raining, THEN...)",
+        "Include at least 1 loop (KEEP hitting snooze UNTIL...)",
+        "Draw it as a flowchart (paper is fine!)"
+      ],
+      bonus: "Make someone else follow your algorithm exactly — do they end up with a complete morning?"
+    }
+  },
+  {
+    num: 2,
+    title: "Your First Python",
+    arc: "Arc 1 — Think Like a Computer",
+    arcClass: "a1",
+    tags: ["variables", "types", "print()", "input()", "strings"],
+    desc: "Today you write real Python for the first time. We'll learn how to store information in variables, what types of data exist, and how to talk to the user with print() and input().",
+    concepts: [
+      { icon: "📦", name: "Variables", body: "A variable is a labeled box. You put something in it, give it a name, and come back to it later. You can change what's inside, but not the box's label style.", analogy: "Like a jar with a sticky note: 'name = Alex'. Change the note, change the value." },
+      { icon: "🏷️", name: "Data Types", body: "str (text), int (whole number), float (decimal number), bool (True/False). Python needs to know the type to know what operations make sense.", analogy: "You can add 3 + 4 = 7. But '3' + '4' = '34'. Same symbol, totally different result." },
+      { icon: "🖨️", name: "print()", body: "Sends output to the screen. Your main tool for seeing what your program is doing. Use it constantly while learning.", analogy: "Like a window into your program's brain." },
+      { icon: "⌨️", name: "input()", body: "Pauses and waits for the user to type something. Everything typed comes back as a string — even numbers!", analogy: "Like a form field. Whatever the user types, you receive as text." }
+    ],
+    code: `# Your First Python — try editing these!
+
+name = "Alex"
+age = 16
+hobby = "skateboarding"
+
+# String formatting with f-strings (the modern way)
+print(f"Hi! My name is {name}, I'm {age} years old.")
+print(f"I love {hobby.capitalize()}.")
+
+# What happens when we mix types?
+print("---")
+print(3 + 4)         # integer addition
+print("3" + "4")     # string concatenation — surprise!
+print(str(age) + " years old")  # convert int to string first
+
+# Next year's age
+print(f"Next year I'll be {age + 1}.")
+
+# Try changing name, age, and hobby above!`,
+    aiPrompt: 'I got this Python error: [paste error here]. I think it means [your guess]. Am I right? And can you explain why Python behaves this way?',
+    watchOut: 'input() always gives you a STRING. If you ask "how old are you?" and get back "16", that\'s the text "16", not the number 16. Use int(input()) to get a real number.',
+    challenge: {
+      title: "Mad Libs Generator",
+      desc: "Ask the user for words, then fill them into a funny story template.",
+      steps: [
+        "Ask for a noun, verb, adjective, and a name using input()",
+        "Print a funny story that uses all 4 words",
+        "Use f-strings for the output (no + concatenation)",
+        "Show the name in ALL CAPS using .upper()"
+      ],
+      bonus: "Add a number (how many of the noun?) and use it in the story"
+    }
+  },
+  {
+    num: 3,
+    title: "Decisions & Loops",
+    arc: "Arc 1 — Think Like a Computer",
+    arcClass: "a1",
+    tags: ["if/elif/else", "while", "for", "control flow"],
+    desc: "Programs don't always run straight from top to bottom. Today we learn how to make decisions with if/elif/else, and how to repeat things with loops. These two ideas are the backbone of almost every program ever written.",
+    concepts: [
+      { icon: "🚦", name: "if / elif / else", body: "The program asks a question. If true, run this block. Elif means 'otherwise, what if...'. Else is the catch-all fallback.", analogy: "Like a traffic light: if green → go, elif yellow → slow, else → stop." },
+      { icon: "🔄", name: "while loop", body: "Keep running this block WHILE a condition is true. The condition is checked before every repetition. If it starts false, the block never runs.", analogy: "Like a washing machine: keep spinning WHILE time > 0." },
+      { icon: "📋", name: "for loop", body: "Go through each item in a sequence one by one. Perfect for lists, ranges of numbers, or strings.", analogy: "Like checking off names on an attendance list, one by one." },
+      { icon: "🎲", name: "random module", body: "Python's built-in module for randomness. import random, then use random.randint(1, 100) to get a random integer between 1 and 100.", analogy: "Like rolling dice — the computer picks a number you can't predict." }
+    ],
+    code: `import random
+
+# --- if / elif / else ---
+score = 85
+
+if score >= 90:
+    print("Grade: A — Excellent!")
+elif score >= 75:
+    print("Grade: B — Good job!")
+elif score >= 60:
+    print("Grade: C — Keep studying!")
+else:
+    print("Grade: F — Let's talk.")
+
+print("---")
+
+# --- for loop over a list ---
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(f"I like {fruit}!")
+
+print("---")
+
+# --- while loop ---
+countdown = 5
+while countdown > 0:
+    print(f"T-minus {countdown}...")
+    countdown -= 1
+print("Liftoff! 🚀")
+
+print("---")
+
+# --- random ---
+number = random.randint(1, 10)
+print(f"Random number: {number}")`,
+    aiPrompt: 'I wrote a number guessing game using a while loop. Can you show me another way to write the same logic? Explain the trade-offs — I want to understand which is better and why.',
+    watchOut: 'Infinite loops! If your while loop\'s condition never becomes False, your program runs forever. Always make sure something inside the loop changes the condition.',
+    challenge: {
+      title: "Number Guessing Game",
+      desc: "The computer picks a secret number. The player keeps guessing until they find it.",
+      steps: [
+        "Use random.randint(1, 100) to pick a secret number",
+        "Use a while loop to keep asking for guesses",
+        "After each wrong guess, print 'Too high!' or 'Too low!'",
+        "When correct, print how many attempts it took"
+      ],
+      bonus: "Add a limit of 7 guesses — if they run out, the computer wins"
+    }
+  },
+  {
+    num: 4,
+    title: "Organizing Code with Functions",
+    arc: "Arc 2 — Build With Code",
+    arcClass: "a2",
+    tags: ["def", "parameters", "return", "DRY", "abstraction"],
+    desc: "Right now your code is one long scroll. Functions let you name a chunk of work, reuse it anywhere, and hide the complexity. Once you learn functions, you'll never want to write code without them.",
+    concepts: [
+      { icon: "📺", name: "Functions", body: "A function is a named, reusable chunk of code. You define it once with def, and call it as many times as you want.", analogy: "Like a remote control button — press it once, something complex happens inside the TV." },
+      { icon: "🎛️", name: "Parameters", body: "The inputs you pass into a function. They let the same function work with different values each time it's called.", analogy: "Like a coffee machine's settings: size='large', milk=True — same machine, different result." },
+      { icon: "↩️", name: "return", body: "The output a function sends back to whoever called it. A function without return is like a chef who cooks food but never serves it.", analogy: "return is the function handing you the finished product." },
+      { icon: "♻️", name: "DRY Principle", body: "Don't Repeat Yourself. If you write the same code twice, make it a function. Duplication creates bugs — fix it in one place, not ten.", analogy: "Like having one master recipe instead of rewriting it for every chef." }
+    ],
+    code: `# Without functions — messy and repetitive
+# With functions — clean and reusable
+
+def celsius_to_fahrenheit(celsius):
+    """Convert Celsius to Fahrenheit."""
+    return (celsius * 9/5) + 32
+
+def fahrenheit_to_celsius(fahrenheit):
+    """Convert Fahrenheit to Celsius."""
+    return (fahrenheit - 32) * 5/9
+
+def celsius_to_kelvin(celsius):
+    """Convert Celsius to Kelvin."""
+    return celsius + 273.15
+
+# Notice: each function does ONE thing and returns the result
+# The function doesn't print — the caller decides what to do
+
+temp = 100
+f = celsius_to_fahrenheit(temp)
+k = celsius_to_kelvin(temp)
+
+print(f"{temp}°C = {f:.1f}°F")
+print(f"{temp}°C = {k:.2f}K")
+
+# Reuse with a different value — no code duplication!
+print(f"Body temperature: {celsius_to_fahrenheit(37):.1f}°F")
+
+# --- Return vs Print difference ---
+def add_with_return(a, b):
+    return a + b   # caller gets the value back
+
+def add_with_print(a, b):
+    print(a + b)   # value shown, but lost forever
+
+result = add_with_return(3, 4)  # result is 7
+print(f"I can use this: {result * 2}")  # works!`,
+    aiPrompt: 'Here is my temperature converter function: [paste code]. Can you review it and tell me if there\'s anything unclear or that could break? Don\'t rewrite it — give me feedback so I can fix it myself.',
+    watchOut: 'Don\'t mix printing and returning. A function should either calculate and return, OR display and print — not both. Keep them separate for maximum reusability.',
+    challenge: {
+      title: "Temperature Converter Toolkit",
+      desc: "Build a complete converter with a user-facing menu.",
+      steps: [
+        "Write celsius_to_fahrenheit(c), fahrenheit_to_celsius(f), celsius_to_kelvin(c)",
+        "Build a show_menu() function that prints the options",
+        "Write a main loop that reads user choice and calls the right function",
+        "Print the result with 2 decimal places using f-strings"
+      ],
+      bonus: "Add input validation — what if the user types 'abc' instead of a number?"
+    }
+  },
+  {
+    num: 5,
+    title: "Collections of Things",
+    arc: "Arc 2 — Build With Code",
+    arcClass: "a2",
+    tags: ["lists", "dictionaries", "loops", "sort", "append"],
+    desc: "Variables hold one thing. Lists and dictionaries hold many things. Today you learn the most important data structures in Python — and how to combine them into something powerful.",
+    concepts: [
+      { icon: "📚", name: "Lists", body: "An ordered collection of items. Items have positions (indexes starting at 0). You can add, remove, and sort items.", analogy: "Like a numbered shelf — each item has a position. shelf[0] is the first item." },
+      { icon: "📖", name: "Dictionaries", body: "A key-value store. You look things up by name (key), not by position. Keys can be strings, values can be anything.", analogy: "Like a real dictionary — look up 'apple', get the definition. No position needed." },
+      { icon: "🗂️", name: "List of Dicts", body: "The most common pattern in Python. Each dictionary describes one item (a movie, a contact, a product), and the list holds all of them.", analogy: "Like a stack of index cards — each card describes one person, the stack holds everyone." },
+      { icon: "🔑", name: "When to use which", body: "Use a list for ordered sequences of similar things. Use a dict for named properties of one thing. Combine them for real-world data.", analogy: "List of students vs. one student's profile — both patterns are useful." }
+    ],
+    code: `# A list of dictionaries — the workhorse pattern
+movies = []
+
+def add_movie(title, year, rating):
+    movie = {"title": title, "year": year, "rating": rating}
+    movies.append(movie)
+
+def list_movies():
+    if not movies:
+        print("No movies yet!")
+        return
+    sorted_movies = sorted(movies, key=lambda m: m["rating"], reverse=True)
+    print("\\n🎬 Your Movies (ranked):")
+    for i, movie in enumerate(sorted_movies, 1):
+        stars = "⭐" * round(movie["rating"] / 2)
+        print(f"  {i}. {movie['title']} ({movie['year']}) — {movie['rating']}/10 {stars}")
+
+def find_movie(title):
+    for movie in movies:
+        if movie["title"].lower() == title.lower():
+            return movie
+    return None
+
+def average_rating():
+    if not movies:
+        return 0
+    return sum(m["rating"] for m in movies) / len(movies)
+
+# --- Test it ---
+add_movie("Inception", 2010, 8.8)
+add_movie("The Room", 2003, 3.7)
+add_movie("Parasite", 2019, 8.5)
+add_movie("Spider-Man: Into the Spider-Verse", 2018, 8.4)
+
+list_movies()
+print(f"\\n📊 Average rating: {average_rating():.1f}/10")
+
+found = find_movie("parasite")
+if found:
+    print(f"\\n🔍 Found: {found['title']} — {found['rating']}/10")`,
+    aiPrompt: 'I\'m building a movie list app. Should I use a list, a dictionary, or a list of dictionaries? Explain the trade-offs without writing any code for me.',
+    watchOut: 'List indexes start at 0, not 1. The first item is movies[0], not movies[1]. This trips up almost every beginner — even experienced developers sometimes.',
+    challenge: {
+      title: "Personal Movie Ranker",
+      desc: "Build your own movie list program that runs from the command line.",
+      steps: [
+        "add_movie(title, year, rating) — appends to the list",
+        "list_movies() — sorted by rating, highest first",
+        "find_movie(title) — case-insensitive search",
+        "average_rating() — returns the mean rating"
+      ],
+      bonus: "Add a 'remove movie by title' function, and handle the case where average_rating() is called on an empty list"
+    }
+  },
+  {
+    num: 6,
+    title: "When Things Go Wrong",
+    arc: "Arc 2 — Build With Code",
+    arcClass: "a2",
+    tags: ["errors", "debugging", "try/except", "ValueError", "print()"],
+    desc: "Every programmer breaks code constantly. The skill isn't writing perfect code — it's finding and fixing bugs quickly. Today you learn to read error messages as helpful clues, and handle problems gracefully with try/except.",
+    concepts: [
+      { icon: "🔴", name: "Syntax Errors", body: "Python can't even understand the code. Like a grammar mistake so bad the sentence is meaningless. Caught before the program runs.", analogy: "Like writing 'I goes to store the' — your brain refuses to parse it." },
+      { icon: "🟡", name: "Runtime Errors", body: "The code is grammatically correct but something impossible happens during execution. Division by zero, accessing a list index that doesn't exist.", analogy: "Like correct instructions that are physically impossible: 'divide this pile into zero groups'." },
+      { icon: "🟣", name: "Logic Errors", body: "The sneakiest type. The program runs without crashing, but gives the wrong answer. Only caught by testing with known inputs.", analogy: "Like a navigation app that works perfectly — but sends you to the wrong city." },
+      { icon: "🛡️", name: "try / except", body: "Wrap dangerous code in try. If an error happens, except catches it and runs your fallback code instead of crashing.", analogy: "Like a safety net under a tightrope — if something goes wrong, you land safely." }
+    ],
+    code: `# --- Reading errors as clues ---
+
+# try / except pattern
+def get_positive_integer(prompt):
+    """Ask until the user enters a valid positive integer."""
+    while True:
+        try:
+            value = int(input(prompt))
+            if value > 0:
+                return value
+            else:
+                print("  ⚠️  Please enter a number greater than 0.")
+        except ValueError:
+            print("  ⚠️  That's not a valid number. Try again.")
+
+# --- Catching specific error types ---
+def safe_divide(a, b):
+    try:
+        result = a / b
+        return result
+    except ZeroDivisionError:
+        print("Error: can't divide by zero!")
+        return None
+    except TypeError:
+        print("Error: both inputs must be numbers!")
+        return None
+
+print(safe_divide(10, 2))   # works fine
+print(safe_divide(10, 0))   # caught!
+print(safe_divide(10, "x")) # caught!
+
+# --- The debugging print() trick ---
+# When confused, print everything:
+scores = [85, 72, 91, 68]
+total = 0
+
+for i, score in enumerate(scores):
+    total += score
+    print(f"  After step {i}: total = {total}")  # debug print
+
+average = total / len(scores)
+print(f"Average: {average:.1f}")`,
+    aiPrompt: 'Here is my code and the error I got: [paste both]. I think the problem is on line X because Y. Am I right? Explain why Python behaves this way — I want to understand it, not just fix it.',
+    watchOut: 'Don\'t catch ALL exceptions with bare "except:" — you\'ll accidentally hide errors you didn\'t expect. Always catch specific error types like ValueError or ZeroDivisionError.',
+    challenge: {
+      title: "Bulletproof Input Handler",
+      desc: "Write a function that never crashes, no matter what the user types.",
+      steps: [
+        "get_positive_integer(prompt) — loops until valid positive int",
+        "get_float_in_range(prompt, min, max) — loops until float in range",
+        "Test with: strings, empty input, negative numbers, floats when int expected",
+        "Print a helpful, specific error message for each bad input type"
+      ],
+      bonus: "Add a max_attempts parameter — after N failed tries, raise a custom exception"
+    }
+  },
+  {
+    num: 7,
+    title: "Saving Data That Lasts",
+    arc: "Arc 2 — Build With Code",
+    arcClass: "a2",
+    tags: ["SQLite", "files", "JSON", "CRUD", "databases"],
+    desc: "Everything your program has been doing lives in RAM — and vanishes when it closes. Today we fix that. You'll learn why databases exist, and build your first app that actually remembers things.",
+    concepts: [
+      { icon: "💾", name: "Why data disappears", body: "RAM (memory) is fast but temporary. When your program ends, it's erased. To persist data, we write it to disk — in files or databases.", analogy: "RAM is your desk — stuff on it disappears when you leave. A database is your filing cabinet." },
+      { icon: "📂", name: "JSON Files", body: "A text file format that Python can easily read and write. Great for simple, small data. Breaks down fast when you need to search or relate multiple datasets.", analogy: "Like a notebook — easy to write in, hard to search efficiently." },
+      { icon: "🗄️", name: "SQLite", body: "A full database engine stored in a single file. Supports SQL queries, relationships between tables, and much faster searching than JSON.", analogy: "Like a spreadsheet with superpowers — you can search, sort, and connect sheets instantly." },
+      { icon: "✏️", name: "CRUD", body: "Create, Read, Update, Delete — the four fundamental operations on any database. Every app you've ever used is built on these four operations.", analogy: "Like managing contacts: add a contact, look one up, change their number, remove them." }
+    ],
+    code: `import sqlite3
+
+# Create a connection — this creates the file if it doesn't exist
+conn = sqlite3.connect(":memory:")  # :memory: = temporary, in-RAM db for testing
+conn.row_factory = sqlite3.Row     # rows behave like dicts
+cursor = conn.cursor()
+
+# CREATE — set up the table
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS contacts (
+        id    INTEGER PRIMARY KEY AUTOINCREMENT,
+        name  TEXT    NOT NULL,
+        email TEXT,
+        phone TEXT
+    )
+""")
+conn.commit()
+
+# CREATE — insert rows
+def add_contact(name, email, phone):
+    cursor.execute(
+        "INSERT INTO contacts (name, email, phone) VALUES (?, ?, ?)",
+        (name, email, phone)
+    )
+    conn.commit()
+    print(f"✅ Added: {name}")
+
+# READ — select all
+def list_contacts():
+    rows = cursor.execute("SELECT * FROM contacts ORDER BY name").fetchall()
+    print("\\n📋 Contacts:")
+    for row in rows:
+        print(f"  [{row['id']}] {row['name']} — {row['email']} — {row['phone']}")
+
+# UPDATE — change a phone number
+def update_phone(contact_id, new_phone):
+    cursor.execute("UPDATE contacts SET phone = ? WHERE id = ?", (new_phone, contact_id))
+    conn.commit()
+    print(f"📝 Updated phone for id={contact_id}")
+
+# DELETE — remove a contact
+def delete_contact(contact_id):
+    cursor.execute("DELETE FROM contacts WHERE id = ?", (contact_id,))
+    conn.commit()
+    print(f"🗑️  Deleted contact id={contact_id}")
+
+# --- Try it ---
+add_contact("Ana Silva", "ana@example.com", "555-1234")
+add_contact("Ben Costa", "ben@example.com", "555-5678")
+add_contact("Cara Lima", "cara@example.com", "555-9012")
+list_contacts()
+
+update_phone(1, "555-9999")
+delete_contact(2)
+list_contacts()`,
+    aiPrompt: 'Why would I use SQLite instead of just saving a JSON file? Give me 3 specific situations where a database is clearly the better choice. No code — just explain the reasoning.',
+    watchOut: 'Always use ? placeholders in SQL queries — NEVER format the query string directly with user input. Otherwise you\'re vulnerable to SQL injection (a famous and dangerous hack).',
+    challenge: {
+      title: "SQLite Contact Book",
+      desc: "Build a contact book that persists between runs.",
+      steps: [
+        "Create a contacts.db file with name, email, phone columns",
+        "Implement add, list, search by name, and delete",
+        "Use a while-loop menu so the user can keep doing operations",
+        "Persist between runs — data should still be there when you reopen"
+      ],
+      bonus: "Add an 'update email' feature. Validate that email contains '@' before saving."
+    }
+  },
+  {
+    num: 8,
+    title: "Thinking in Objects",
+    arc: "Arc 3 — Build Like a Developer",
+    arcClass: "a3",
+    tags: ["class", "__init__", "self", "methods", "OOP"],
+    desc: "So far, data and functions have been separate. Object-Oriented Programming bundles them together. A class is a blueprint; an object is the real thing built from it. Once it clicks, you'll see it everywhere.",
+    concepts: [
+      { icon: "🏗️", name: "Class = Blueprint", body: "A class defines what objects of that type have (attributes) and can do (methods). It's not the real thing — it's the template for making real things.", analogy: "A house blueprint describes every house of that design. Each actual house is a separate object." },
+      { icon: "🆕", name: "__init__", body: "The special method that runs automatically when you create a new object. It sets up the object's initial state — its attributes.", analogy: "Like the setup checklist when a new employee starts: assign desk, email, ID badge." },
+      { icon: "🔁", name: "self", body: "Inside every method, 'self' refers to the specific object that called the method. It's how one Dog knows its own name, not every Dog's name.", analogy: "Like saying 'my' instead of 'every person's' — 'my name' vs 'every person's name'." },
+      { icon: "⚡", name: "Methods", body: "Functions that belong to a class and operate on its data. They can read or change the object's attributes.", analogy: "Like a bank account's actions: deposit, withdraw, check balance — all tied to that account." }
+    ],
+    code: `class BankAccount:
+    """A simple bank account with transaction history."""
+
+    def __init__(self, owner, initial_balance=0):
+        self.owner = owner
+        self.balance = initial_balance
+        self.transactions = []
+        print(f"Account created for {owner} (balance: ${initial_balance:.2f})")
+
+    def deposit(self, amount):
+        if amount <= 0:
+            print("  ⚠️  Deposit must be positive.")
+            return
+        self.balance += amount
+        self.transactions.append(f"+ ${amount:.2f}  →  balance: ${self.balance:.2f}")
+
+    def withdraw(self, amount):
+        if amount <= 0:
+            print("  ⚠️  Amount must be positive.")
+            return
+        if amount > self.balance:
+            print(f"  ⚠️  Insufficient funds (balance: ${self.balance:.2f})")
+            return
+        self.balance -= amount
+        self.transactions.append(f"- ${amount:.2f}  →  balance: ${self.balance:.2f}")
+
+    def transfer(self, amount, target):
+        """Transfer money to another BankAccount."""
+        self.withdraw(amount)
+        target.deposit(amount)
+
+    def print_statement(self):
+        print(f"\\n📄 Statement for {self.owner}")
+        print("─" * 38)
+        for t in self.transactions:
+            print(f"  {t}")
+        print(f"  Current balance: ${self.balance:.2f}")
+        print("─" * 38)
+
+# --- Two accounts, one transfer ---
+alice = BankAccount("Alice", 1000)
+bob   = BankAccount("Bob",    500)
+
+alice.deposit(250)
+alice.withdraw(100)
+alice.transfer(300, bob)
+
+alice.print_statement()
+bob.print_statement()`,
+    aiPrompt: 'I\'m designing a library system. Should the borrow() method live on the Book class or the Library class? Give me the argument for each side without writing any code.',
+    watchOut: 'Remember self everywhere inside a class. Forgetting it is the #1 beginner mistake with OOP. self.name is the object\'s attribute; name (without self) is just a local variable that disappears after the method runs.',
+    challenge: {
+      title: "BankAccount Class",
+      desc: "Build a full bank account system from scratch.",
+      steps: [
+        "Attributes: owner, balance, transactions (list)",
+        "Methods: deposit(amount), withdraw(amount), print_statement()",
+        "withdraw() must refuse if funds are insufficient",
+        "Create two accounts and transfer money between them"
+      ],
+      bonus: "Add an interest(rate) method that adds balance * rate to the balance and logs it as a transaction"
+    }
+  },
+  {
+    num: 9,
+    title: "Working Like a Developer",
+    arc: "Arc 3 — Build Like a Developer",
+    arcClass: "a3",
+    tags: ["git", "github", "commit", "readme", "clean code"],
+    desc: "Real developers don't just write code — they manage it. Git keeps every version of your code forever. Clean code makes it readable to others (and to future you). Today you ship to GitHub for the first time.",
+    concepts: [
+      { icon: "📸", name: "Git = Version History", body: "Git saves a snapshot of your code every time you commit. You can go back to any snapshot. You can never permanently delete work.", analogy: "Like Google Docs 'see version history' — but for code, and infinitely more powerful." },
+      { icon: "🌐", name: "GitHub", body: "A website that hosts your git repositories in the cloud. It's where developers share code, collaborate, and show their work.", analogy: "Like Google Drive for code — but with built-in history, collaboration tools, and a public portfolio." },
+      { icon: "💬", name: "Commit Messages", body: "A short description of what changed and why. Good messages tell the story of your project. Future-you will be grateful.", analogy: "'Fixed the bug' is terrible. 'Fix crash when user enters empty name in login form' is perfect." },
+      { icon: "✨", name: "Clean Code", body: "Code is read 10x more than it's written. Good names, short functions, helpful comments, and consistent formatting make code a pleasure to work with.", analogy: "Like a well-organized kitchen — everything has a logical place, and cooking goes smoothly." }
+    ],
+    code: `# --- BEFORE refactoring: messy and hard to read ---
+
+def f(x,y,z):
+ conn=__import__('sqlite3').connect('db.db')
+ c=conn.cursor()
+ c.execute('INSERT INTO t VALUES (?,?,?)',(x,y,z))
+ conn.commit()
+ conn.close()
+
+# --- AFTER refactoring: clean, readable, professional ---
+
+import sqlite3
+
+DATABASE_PATH = "contacts.db"
+
+def save_contact(name: str, email: str, phone: str) -> None:
+    """
+    Insert a new contact record into the database.
+
+    Args:
+        name:  Full name of the contact.
+        email: Email address (not validated here).
+        phone: Phone number as a string.
+    """
+    with sqlite3.connect(DATABASE_PATH) as conn:
+        conn.execute(
+            "INSERT INTO contacts (name, email, phone) VALUES (?, ?, ?)",
+            (name, email, phone)
+        )
+
+# What changed and why:
+# 1. Descriptive name (save_contact vs f)
+# 2. Type hints (name: str) document expected input
+# 3. Docstring explains purpose and parameters
+# 4. 'with' statement handles conn.close() automatically
+# 5. Constant for database path (easy to change in one place)
+# 6. Consistent spacing and formatting
+
+print("Which version would you rather debug at 11pm?")`,
+    aiPrompt: 'Here is a function I wrote: [paste code]. Can you suggest a good docstring for it? Then explain what makes a docstring effective vs. just noise.',
+    watchOut: 'Don\'t commit unrelated changes together. If you fixed a bug AND added a feature, make two commits. Good commits are small, focused, and tell one clear story.',
+    challenge: {
+      title: "Push Everything to GitHub",
+      desc: "Organize and publish all your previous work.",
+      steps: [
+        "Create the python-mentoring GitHub repo from PLAN.md structure",
+        "Commit each session's code into its folder",
+        "Write a README.md for each session (what you built + what you learned)",
+        "Write the top-level README.md that describes the whole course"
+      ],
+      bonus: "Add a .gitignore file that excludes *.db files (you don't want to commit databases)"
+    }
+  },
+  {
+    num: 10,
+    title: "Mini-Project & Showcase",
+    arc: "Arc 3 — Build Like a Developer",
+    arcClass: "a3",
+    tags: ["project", "SQLite", "classes", "design", "presentation"],
+    desc: "No new theory — just building. You pick a project, spend 60 minutes coding it with everything you've learned, then spend 60 minutes explaining it out loud. Teaching your own code is the deepest form of understanding.",
+    concepts: [
+      { icon: "🗂️", name: "Option A: Task Manager", body: "Add, complete, and delete tasks. Tasks saved in SQLite with a due date. List tasks sorted by date. Filter by complete/incomplete.", analogy: "Like a personal Trello — but built entirely by you." },
+      { icon: "❓", name: "Option B: Trivia Quiz App", body: "Questions stored in a database. Player picks a category. High scores tracked between sessions. Uses Question and Game classes.", analogy: "Like a terminal-based HQ Trivia — with your own questions." },
+      { icon: "💰", name: "Option C: Budget Tracker", body: "Log income and expenses with categories. Show a summary per category. Calculate remaining balance. SQLite storage.", analogy: "Like a stripped-down Mint — your own personal finance CLI." },
+      { icon: "🎤", name: "The Showcase", body: "Explain your code like you're teaching it to someone. Walk through every major decision. Be ready for 'why did you use X instead of Y?'", analogy: "Like a design review — you're the architect presenting to the team." }
+    ],
+    code: `# --- Option A starter: CLI Task Manager ---
+import sqlite3
+from datetime import date
+
+DATABASE = "tasks.db"
+
+def setup_database():
+    with sqlite3.connect(DATABASE) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS tasks (
+                id        INTEGER PRIMARY KEY AUTOINCREMENT,
+                title     TEXT    NOT NULL,
+                due_date  TEXT,
+                completed INTEGER DEFAULT 0
+            )
+        """)
+
+def add_task(title, due_date=None):
+    with sqlite3.connect(DATABASE) as conn:
+        conn.execute(
+            "INSERT INTO tasks (title, due_date) VALUES (?, ?)",
+            (title, due_date)
+        )
+    print(f"✅ Task added: '{title}'")
+
+def complete_task(task_id):
+    with sqlite3.connect(DATABASE) as conn:
+        conn.execute("UPDATE tasks SET completed = 1 WHERE id = ?", (task_id,))
+    print(f"☑️  Task {task_id} marked complete.")
+
+def list_tasks(show_completed=False):
+    with sqlite3.connect(DATABASE) as conn:
+        conn.row_factory = sqlite3.Row
+        filter_clause = "" if show_completed else "WHERE completed = 0"
+        rows = conn.execute(
+            f"SELECT * FROM tasks {filter_clause} ORDER BY due_date"
+        ).fetchall()
+
+    if not rows:
+        print("No tasks found.")
+        return
+    print("\\n📋 Tasks:")
+    for row in rows:
+        status = "☑" if row["completed"] else "○"
+        due = row["due_date"] or "no due date"
+        print(f"  [{row['id']}] {status} {row['title']} — due: {due}")
+
+# --- Demo run ---
+setup_database()
+add_task("Finish session 10 code", "2024-03-15")
+add_task("Push repo to GitHub",    "2024-03-15")
+add_task("Write final reflection", "2024-03-16")
+list_tasks()
+complete_task(1)
+print("\\nAfter completing task 1:")
+list_tasks()`,
+    aiPrompt: 'I want to build [describe your project]. Before I write any code, help me break this down into pieces. What are the main components? What should I build first? What are the likely tricky parts? No code — just help me think.',
+    watchOut: 'Don\'t over-engineer. Build the simplest version that works first. Add features only after the core works. A simple app that works is infinitely better than a complex one that doesn\'t.',
+    challenge: {
+      title: "Final Reflection",
+      desc: "The most important thing you'll write in this course.",
+      steps: [
+        "What was the hardest concept for you? Why?",
+        "What was the moment something finally 'clicked'?",
+        "What would you build if you had 2 more weeks?",
+        "Post this as your final README entry on GitHub"
+      ],
+      bonus: "Record a 2-minute video walkthrough of your project and link it in the README"
+    }
+  }
+];
+
+let currentSession = 0;
+let skulptReady = false;
+
+function renderSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const arcs = [
+    { label: 'Arc 1 · Think', cls: 'a1', range: [0,2] },
+    { label: 'Arc 2 · Build', cls: 'a2', range: [3,6] },
+    { label: 'Arc 3 · Ship', cls: 'a3', range: [7,9] }
+  ];
+
+  let html = '';
+  arcs.forEach(arc => {
+    html += `<div class="sidebar-section">${arc.label}</div>`;
+    for (let i = arc.range[0]; i <= arc.range[1]; i++) {
+      const s = SESSIONS[i];
+      const active = i === currentSession ? 'active' : '';
+      html += `
+        <button class="session-btn ${active}" onclick="selectSession(${i})">
+          <span class="session-num">${String(s.num).padStart(2,'0')}</span>
+          <span class="session-info">
+            <div class="session-title">${s.title}</div>
+            <div class="session-tag">${s.tags[0]} · ${s.tags[1]}</div>
+          </span>
+          <span class="dot"></span>
+        </button>`;
+    }
+  });
+  sidebar.innerHTML = html;
+}
+
+function renderMain() {
+  const s = SESSIONS[currentSession];
+  const main = document.getElementById('main');
+
+  const conceptsHtml = s.concepts.map(c => `
+    <div class="concept-card">
+      <span class="concept-icon">${c.icon}</span>
+      <div class="concept-name">${c.name}</div>
+      <div class="concept-body">${c.body}</div>
+      <div class="concept-analogy">${c.analogy}</div>
+    </div>
+  `).join('');
+
+  const stepsHtml = s.challenge.steps.map((step, i) => `
+    <div class="challenge-step">
+      <div class="step-num">${i+1}</div>
+      <span>${step}</span>
+    </div>
+  `).join('');
+
+  const tagsHtml = s.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+  main.innerHTML = `
+    <div class="session-header">
+      <div class="session-number-big">${String(s.num).padStart(2,'0')}</div>
+      <div class="session-meta">
+        <div class="session-arc">${s.arc}</div>
+        <div class="session-name">${s.title}</div>
+        <div class="session-desc">${s.desc}</div>
+        <div class="session-tags">${tagsHtml}</div>
+      </div>
+    </div>
+
+    <div class="section-label">Core Concepts</div>
+    <div class="concepts-grid">${conceptsHtml}</div>
+
+    <div class="section-label">Code Playground</div>
+    <div class="playground">
+      <div class="playground-header">
+        <div class="playground-dots">
+          <div class="playground-dot"></div>
+          <div class="playground-dot"></div>
+          <div class="playground-dot"></div>
+        </div>
+        <div class="playground-title">session_${String(s.num).padStart(2,'0')}_example.py</div>
+        <button class="clear-btn" onclick="clearCode()">clear</button>
+        <button class="run-btn" id="runBtn" onclick="runCode()">
+          <svg viewBox="0 0 16 16"><path d="M3 2l11 6-11 6V2z"/></svg>
+          Run Python
+        </button>
+      </div>
+      <div class="playground-editor">
+        <textarea class="code-textarea" id="codeArea" spellcheck="false">${s.code}</textarea>
+      </div>
+      <div class="playground-output">
+        <div class="output-label">OUTPUT</div>
+        <div class="output-text empty" id="outputArea">Click "Run Python" to execute the code above…</div>
+      </div>
+    </div>
+
+    <div class="tips-row">
+      <div class="tip-card ai">
+        <div class="tip-label ai">🤖  AI Prompt Template</div>
+        <div class="tip-prompt">${s.aiPrompt}</div>
+        <div class="tip-note">Form your own hypothesis BEFORE asking. AI confirms and explains — it doesn't replace thinking.</div>
+      </div>
+      <div class="tip-card watch">
+        <div class="tip-label watch">⚠️  Common Mistake</div>
+        <div class="tip-prompt">${s.watchOut}</div>
+        <div class="tip-note">Every developer falls into this trap at some point. Now you know to look for it.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Take-Home Challenge</div>
+    <div class="challenge-card">
+      <div class="challenge-header">
+        <span class="challenge-star">★</span>
+        <div class="challenge-badge">Session ${s.num} Challenge</div>
+      </div>
+      <div class="challenge-body">
+        <div class="challenge-title">${s.challenge.title}</div>
+        <div class="challenge-desc">${s.challenge.desc}</div>
+        <div class="challenge-steps">${stepsHtml}</div>
+        <div style="margin-top:14px; font-size:13px; color:var(--text2);">
+          <strong style="color:var(--green);">Bonus:</strong>
+          <span class="bonus-chip">extra</span>
+          ${s.challenge.bonus}
+        </div>
+      </div>
+    </div>
+  `;
+
+  setupCodeArea();
+}
+
+function setupCodeArea() {
+  const ta = document.getElementById('codeArea');
+  if (!ta) return;
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      ta.value = ta.value.substring(0, start) + '    ' + ta.value.substring(end);
+      ta.selectionStart = ta.selectionEnd = start + 4;
+    }
+  });
+}
+
+function selectSession(idx) {
+  currentSession = idx;
+  renderSidebar();
+  renderMain();
+  window.scrollTo(0, 0);
+  document.getElementById('main').scrollTo(0, 0);
+}
+
+function clearCode() {
+  document.getElementById('codeArea').value = '';
+  const out = document.getElementById('outputArea');
+  out.textContent = 'Editor cleared. Write some Python!';
+  out.className = 'output-text empty';
+}
+
+function runCode() {
+  const code = document.getElementById('codeArea').value;
+  const out = document.getElementById('outputArea');
+  const btn = document.getElementById('runBtn');
+
+  if (!skulptReady) {
+    out.textContent = '⏳ Python engine still loading, please wait a moment…';
+    out.className = 'output-text empty';
+    return;
+  }
+
+  btn.textContent = 'Running…';
+  btn.disabled = true;
+  out.textContent = '';
+  out.className = 'output-text';
+
+  let outputBuffer = '';
+
+  function outfn(text) {
+    outputBuffer += text;
+    out.textContent = outputBuffer;
+    out.className = 'output-text';
+  }
+
+  function builtinRead(x) {
+    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+      throw "File not found: '" + x + "'";
+    return Sk.builtinFiles["files"][x];
+  }
+
+  Sk.configure({
+    output: outfn,
+    read: builtinRead,
+    inputfun: function(prompt) {
+      return new Promise(resolve => {
+        const val = window.prompt(prompt || '') || '';
+        resolve(val);
+      });
+    },
+    inputfunTakesPrompt: true
+  });
+
+  const myPromise = Sk.misceval.asyncToPromise(() =>
+    Sk.importMainWithBody("<stdin>", false, code, true)
+  );
+
+  myPromise.then(() => {
+    if (!outputBuffer) {
+      out.textContent = '(no output — did you forget print()?)';
+      out.className = 'output-text empty';
+    }
+    btn.innerHTML = '<svg viewBox="0 0 16 16" style="width:11px;height:11px;fill:#000"><path d="M3 2l11 6-11 6V2z"/></svg> Run Python';
+    btn.disabled = false;
+  }).catch(err => {
+    let msg = err.toString();
+    if (err.args) {
+      try { msg = err.args.v[0].v; } catch(e) {}
+    }
+    out.textContent = '❌ ' + msg;
+    out.className = 'output-text error';
+    btn.innerHTML = '<svg viewBox="0 0 16 16" style="width:11px;height:11px;fill:#000"><path d="M3 2l11 6-11 6V2z"/></svg> Run Python';
+    btn.disabled = false;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderSidebar();
+  renderMain();
+
+  setTimeout(() => {
+    if (typeof Sk !== 'undefined') {
+      skulptReady = true;
+      const status = document.getElementById('pyStatus');
+      status.textContent = '✓ python ready';
+      status.classList.add('ready');
+      setTimeout(() => { status.style.opacity = '0'; status.style.transition = 'opacity 1s'; }, 2000);
+    }
+  }, 800);
+});
+</script>
+</body>
+</html>
