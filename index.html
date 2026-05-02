@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Mentoring</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Fira+Code:wght@400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0c0e12;--bg2:#12151c;--bg3:#1a1f2b;
+      --border:#2a303f;--text:#e8eaf0;--text2:#9ba3ba;--text3:#5f6880;
+      --amber:#f59e0b;--amber2:#fbbf24;--radius:14px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      background: radial-gradient(900px 600px at 20% 10%, #f59e0b22, transparent 55%),
+                  radial-gradient(900px 600px at 80% 70%, #60a5fa18, transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      font-family:"DM Sans",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+    .card{
+      width:min(920px,100%);
+      background:linear-gradient(180deg,var(--bg2),#0c0e12);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:26px;
+    }
+    .brand{
+      font-family:"Syne",sans-serif;
+      font-weight:800;
+      letter-spacing:-0.6px;
+      font-size:34px;
+      line-height:1.1;
+    }
+    .brand span{color:var(--amber)}
+    .sub{
+      margin-top:10px;
+      color:var(--text2);
+      line-height:1.7;
+      max-width:70ch;
+      font-size:15px;
+    }
+    .row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:18px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      background:var(--amber);
+      color:#000;
+      border:none;
+      border-radius:12px;
+      padding:12px 16px;
+      font-weight:800;
+      cursor:pointer;
+      text-decoration:none;
+      font-family:"DM Sans",sans-serif;
+    }
+    .btn:hover{background:var(--amber2)}
+    .btn code{
+      font-family:"Fira Code",monospace;
+      font-weight:500;
+      font-size:12px;
+      background:#0000001a;
+      padding:2px 8px;
+      border-radius:999px;
+    }
+    .hint{
+      font-family:"Fira Code",monospace;
+      color:var(--text3);
+      font-size:12px;
+      line-height:1.6;
+    }
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:6px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:var(--bg3);
+      color:var(--text2);
+      font-family:"Fira Code",monospace;
+      font-size:12px;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand">Python <span>Mentoring</span></div>
+    <p class="sub">
+      A clean, interactive course portal for students. Use the in-browser Python playground for quick experiments,
+      and run the real exercises locally for full projects (SQLite, files, etc.).
+    </p>
+
+    <div class="row">
+      <a class="btn" href="/portal/#/">
+        GO TO COURSE <code>/portal/#/</code>
+      </a>
+      <span class="pill">Tip: open on projector</span>
+    </div>
+
+    <div class="row">
+      <div class="hint">
+        If this page is blank, run:<br />
+        <code>python3 -m http.server 8000</code><br />
+        then open <code>http://localhost:8000/</code>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
+
