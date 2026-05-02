@@ -1,32 +1,36 @@
 # Flowchart / Algorithm Template
 
 ## Title
-_Write the name of your algorithm here._
+Lavar a louça
 
 ## Inputs
-- _What information does the algorithm need?_
-- _Example: water, teabag, mug_
+Pratos, copos, talheres, detergente, bucha e bombril
 
 ## Steps (numbered)
-1. 
-2. 
-3. 
-4. 
-5. 
+1. pegar o detergente e a bucha
+2. jogar o detergente nos pratos e talheres
+3. esfregar a bucha nos pratos e talheres (ate sair)
+4. se for talher, esfregar com bombril
+5. jogue agua nos pratos e talheres lavos(ate sair o sabao)
+6. guarde os pratos e os talheres
 
 ## Decisions (if / else)
-- **IF** (condition):
-  - then:
+- **IF** (condition):talher
+  - then:esfregar com bombril
 - **ELSE**:
-  - then:
+  - then:seguir para o proximo passo
 
 ## Loop (repeat / until)
 - **REPEAT**:
-  - steps:
-- **UNTIL** (condition):
+  - steps:esfregar
+- **UNTIL** (condition):ate sair
 
+## Loop (repeat / until)
+- **REPEAT**:
+  - steps:enxaguar 
+- **UNTIL** (condition):ate sair o sabao
 ## Output
-_What is the final result?_
+Louças limpas e organizada
 
 ---
 
